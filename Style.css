@@ -5,3 +5,11 @@ ul {
 header {
     background-color: #0F0
 }
+
+footer{
+    background-color: #0F0
+}
+
+.d img{
+    outline: #000 3px;
+}
