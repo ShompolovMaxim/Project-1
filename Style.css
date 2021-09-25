@@ -3,13 +3,38 @@ ul {
 }
 
 header {
-    background-color: #0F0
+    width: 100%;
+    background-color: #0F0;
+}
+
+body{
+    background-color: yellow;
 }
 
 footer{
     background-color: #0F0
 }
 
-.d img{
-    outline: #000 3px;
+a{
+    text-decoration: none;
+    color: black;
+    font-size: large;
+}
+
+p{
+    font-size: large;
+}
+
+img{
+    outline:3px solid blue;
+}
+
+.BuylistImage{
+    width: 200px;
+    height: 200px;
+}
+
+.productImage{
+    width: 400px; 
+    height: 400px;
 }
