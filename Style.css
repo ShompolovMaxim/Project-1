@@ -6,6 +6,7 @@ header {
     width: 100%;
     background-color: #0FA;
     height: 80px;
+    text-align: right;
 }
 
 footer{
@@ -43,7 +44,6 @@ p{
 
 .container{
     margin: 0 auto;
-    padding-left: 30px;
 }
 
 .catalog_item{
@@ -54,6 +54,11 @@ p{
     width: 200px;
     height: 200px;
     outline:3px solid blue;
+    display: inline-block; 
+}
+
+.description{
+    display: inline-block;
 }
 
 .productImage{
