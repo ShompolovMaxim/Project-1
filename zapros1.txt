@@ -10,7 +10,7 @@ UPDATE Prices SET EndDate = SUBSTR(EndDate, 1, 4) || '-' || SUBSTR(EndDate, 6, 2
 
 Task №2
 
-SELECT Login FROM Customers GROUP BY ID HAVING RegistrationDate in (SELECT MAX(RegistrationDate) FROM Customers);
+SELECT Login, max(RegistrationDate) FROM Customers;
 
 
 Task №3
