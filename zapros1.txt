@@ -25,4 +25,4 @@ SELECT sum(Quantity) as 'total_items'  FROM Goods;
 
 Task №5
 
-SELECT avg(age) FROM Customers WHERE PassportDateOfIssue>='2021-01-01';
+SELECT avg(age) FROM Customers WHERE PassportDateOfIssue>=(substr((SELECT DATE('now')),1,4) || '-01-01');
