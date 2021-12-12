@@ -30,20 +30,3 @@ SELECT
 	(SELECT EndDate FROM Prices WHERE Prices.ID=PriceID)AS EndDate
 	FROM Goods WHERE Goods.СategoryID=2;
 
-4)
-
---Выбрать информацию о категории 1 для формирования её страницы (на практике номер категории может быть любым)
-
-SELECT name, Description FROM Categories WHERE ID=1;
-
-5)
-
---Поменять статус заказа на "доставлен"
-
-UPDATE Orders SET Status='Delivered' WHERE NumberOfOrder=1;
-
-6)
-
---Уменьшить количество товара 1 на складе на 5 единиц (на практике числа могут быть любыми)
-
-UPDATE Goods SET Quantity=Quantity-5 WHERE ID = 1;
