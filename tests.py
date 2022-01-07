@@ -73,17 +73,20 @@ class TestRequests(unittest.TestCase):
 
     def setUp(self):
         self.db.newCursor()
+        self.db.cursor.execute("SELECT DATE('now')")
+        cur=self.db.cursor.fetchall()
+        cur=cur[0][0]
         self.db.cursor.executescript('''
         INSERT INTO "Goods" VALUES (1,'Флешка №1',30,1,'16 GB Цвет: синий',1);
         INSERT INTO "Goods" VALUES (2,'Клавиатура №1',60,2,'Цвет: чёрный',2);
         INSERT INTO "Goods" VALUES (3,'Телевизор №1',20,3,'Цвет: чёрный',3);
         INSERT INTO "Categories" VALUES (1,'Флешки','Различные флешки');
         INSERT INTO "Categories" VALUES (2,'Клавиатуры','Клавиатуры на ваш выбор');
-        INSERT INTO "Categories" VALUES (3,'Телевизоры','Телевизоры');
-        INSERT INTO "Prices" VALUES (1,1000,1,'2021-11-13','2022-11-12');
-        INSERT INTO "Prices" VALUES (2,2000,2,'2021-11-13','2022-11-12');
-        INSERT INTO "Prices" VALUES (3,20000,3,'2021-11-13','2022-11-12');
-        INSERT INTO "Prices" VALUES (4,500,1,'2018-01-01','2021-11-12');
+        INSERT INTO "Categories" VALUES (3,'Телевизоры','Телевизоры');''')
+        self.db.cursor.execute("INSERT INTO 'Prices' VALUES (1,1000,1,'2021-11-13',:cur_date);",{"cur_date":cur})
+        self.db.cursor.execute("INSERT INTO 'Prices' VALUES (2,2000,2,'2021-11-13',:cur_date);",{"cur_date":cur})
+        self.db.cursor.execute("INSERT INTO 'Prices' VALUES (3,20000,3,'2021-11-13',:cur_date);",{"cur_date":cur})
+        self.db.cursor.executescript('''INSERT INTO "Prices" VALUES (4,500,1,'2018-01-01','2021-11-12');
         INSERT INTO "Prices" VALUES (5,1500,2,'2018-01-01','2021-11-12');
         INSERT INTO "Customers" VALUES (1,'Шомполов','Максим','Андреевич','81234567890','qwerty@google.com','2021-10-11','qwery',12345,'1234567890123456','12 34 567890','2021-11-13','ГУ МВД ПО Г. МОСКВЕ',123456789,'2021-11-13',5000,'город Москва, Балаклавский проспект, дом 6А',21);
         INSERT INTO "Customers" VALUES (2,'Иванов','Иван','Иванович','89635274107','abcd@yandex.ru','2021-11-14','abcd',54321,'3216549870789456','98 87 455612','2004-01-01','ГУ МВД ПО Г. МОСКВЕ',345343455,'2021-10-20',9000,'город Москва, Балаклавский проспект, дом 6А',40);
@@ -143,8 +146,18 @@ class TestRequests(unittest.TestCase):
                 break
         self.assertEqual(k,0,'Not all prices are relevant')
 
+    def test_UpdatePrices_No_New_Price(self):
+        self.db.cursor.execute("UPDATE Prices set EndDate='2021-12-01' WHERE Prices.id=3;")
+        self.db.UpdatePrices()
+        self.db.cursor.execute("SELECT PriceID FROM Goods WHERE Goods.ID=3;")
+        res=self.db.cursor.fetchall()
+        
+        self.assertEqual(res[0][0],None,'Wrong for no price')
+
     def test_CategoryGoods_Some(self):
-        expectedResult=[('Клавиатура №1', 60, 'Цвет: чёрный', 2000, '2022-11-12')]
+        self.db.cursor.execute("SELECT DATE('now')")
+        cur=self.db.cursor.fetchall()
+        expectedResult=[('Клавиатура №1', 60, 'Цвет: чёрный', 2000, cur[0][0])]
         self.assertEqual(self.db.CategoryGoods(2),expectedResult,'Not correct goods for Category 2')
 
     def test_CategoryGoods_No_Goods(self):
