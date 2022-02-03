@@ -18,7 +18,7 @@ def about_us():
 
 @app.route('/catalog/')
 def catalog():
-    return render_template('Catalog.html')
+    return render_template('catalog.html')
 
 @app.route('/product1/')
 def product1():
