@@ -2,14 +2,14 @@
 {% block title %}Флешка №1{% endblock %}
 {% block content %}
         <div class="description">
-            <h1>Флешка №1</h1>
-            <img src="{{ url_for('static', filename='Флешка№1.jpg') }}" alt="Флешка №1" class='productImage'>
+            <h1>{{good.name}}</h1>
+            <img src="{{ url_for('static', filename=good.photo_link) }}" alt=good.name class='productImage'>
         </div>
         <div class="description">
-            <p>Флешка №1</p>
+            <p>{{good.name}}}</p>
             <p>16 GB</p>
-            <p>Цвет: синий</p>
-            <p>Цена: 1000 рублей</p>
+            <p>Цвет: {{good.colour}}</p>
+            <p>Цена: {{good.price.price}} рублей</p>
             <button type="button" class="btn btn-primary">Купить</button>
         </div>
 {% endblock %}

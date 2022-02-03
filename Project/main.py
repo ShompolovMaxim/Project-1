@@ -25,11 +25,16 @@ def about_us():
 
 @app.route('/catalog/')
 def catalog():
-    return render_template('catalog.html')
+    return render_template('catalog.html',goods=Goods.query.all())
 
-@app.route('/product1/')
+@app.route('/product1/', methods=['GET', 'POST'])
 def product1():
-    return render_template('product.html')
+    good_id=int(request.args.get('good_id',-1))
+    goods=Goods.query.all()
+    for i in goods:
+        if i.id==good_id:
+            break
+    return render_template('product.html',good=i)
 
 if __name__ == '__main__':
     app.run(debug=True)

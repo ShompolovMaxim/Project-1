@@ -46,6 +46,11 @@ class Goods(db.Model):
     description = db.Column(db.String(200))
     price_id = db.Column(db.Integer, db.ForeignKey('prices.id'))
     price = db.relationship('Prices', backref=db.backref('good', lazy=False))
+    photo_link = db.Column(db.String(80))
+    colour = db.Column(db.String(80))
+
+    def link(self):
+        return '/product1?good_id='+str(self.id)
     
 
 class Orders(db.Model):
