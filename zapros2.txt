@@ -1,0 +1,32 @@
+1)
+
+--Выбрать данные (номер заказа, ID товара, цена, коичество, ID покупателя) о заказах, которые готовы к доставке, но не доставлены 
+
+SELECT 
+	NumberOfOrder,
+	(SELECT GoodID FROM Prices WHERE ID=PriceID) AS GoodID,
+	(SELECT Price FROM Prices WHERE ID=PriceID) AS Price,
+	Quantity,
+	CustomerID
+	FROM Orders WHERE Status = 'ReadyToByDelivered';
+
+
+2)
+
+--Обновить цены товаров до актуальных на  этот день
+
+UPDATE Goods SET PriceID=(SELECT ID FROM Prices WHERE GoodID=Goods.ID and EndDate>=(SELECT DATE('now')) and StartDate<=(SELECT DATE('now')))
+WHERE (SELECT EndDate FROM Prices WHERE Goods.PriceID=Prices.ID)<(SELECT DATE('now'));
+
+3)
+
+--Выбрать информацию о товарах для формирования страницы для категории 2 (на практике номер категории может быть любым)
+
+SELECT
+	Name,
+	Quantity, 
+	Description,
+	(SELECT Price FROM Prices WHERE Prices.ID=PriceID)AS Price,
+	(SELECT EndDate FROM Prices WHERE Prices.ID=PriceID)AS EndDate
+	FROM Goods WHERE Goods.СategoryID=2;
+
