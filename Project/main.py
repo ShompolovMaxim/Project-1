@@ -1,10 +1,11 @@
 from flask import *
+import ORM
 
-class Feedback():
+'''class Feedback():
 
     def __init__(self,name,review):
         self.name=name
-        self.review=review
+        self.review=review'''
 
 app = Flask(__name__)
 
@@ -20,7 +21,7 @@ def about_us():
         name = request.form.get('name')
         review = request.form.get('review')
         feedback.append(Feedback(name,review))
-    return render_template('about_us.html',feedback=feedback)
+    return render_template('about_us.html',feedback=ORM.get_feedback())
 
 @app.route('/catalog/')
 def catalog():
