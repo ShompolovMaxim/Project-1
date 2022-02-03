@@ -1,5 +1,11 @@
 from flask import *
 
+class Feedback():
+
+    def __init__(self,name,review):
+        self.name=name
+        self.review=review
+
 app = Flask(__name__)
 
 feedback=[]
@@ -8,13 +14,13 @@ feedback=[]
 def main():
     return render_template('main.html')
 
-@app.route('/about_us/')
+@app.route('/about_us/', methods=['GET', 'POST'])
 def about_us():
     if request.method == 'POST':
+        name = request.form.get('name')
         review = request.form.get('review')
-        feedback.appnend(review)
-        print(feedback)
-    return render_template('about_us.html')
+        feedback.append(Feedback(name,review))
+    return render_template('about_us.html',feedback=feedback)
 
 @app.route('/catalog/')
 def catalog():
