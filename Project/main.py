@@ -1,5 +1,5 @@
 from flask import *
-import ORM
+from ORM import *
 
 '''class Feedback():
 
@@ -7,7 +7,7 @@ import ORM
         self.name=name
         self.review=review'''
 
-app = Flask(__name__)
+#app = Flask(__name__)
 
 feedback=[]
 
@@ -20,8 +20,8 @@ def about_us():
     if request.method == 'POST':
         name = request.form.get('name')
         review = request.form.get('review')
-        feedback.append(Feedback(name,review))
-    return render_template('about_us.html',feedback=ORM.get_feedback())
+        db.session.add(Feedback(name=name,review=review))
+    return render_template('about_us.html',feedback=Feedback.query.all())
 
 @app.route('/catalog/')
 def catalog():
