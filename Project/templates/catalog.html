@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Каталог{% endblock %}
+{% block content %}
+        <h1>Каталог</h1>
+        <h3>Флешки</h3>
+
+        <div class='catalog_items'>
+            {% for good in goods %}
+                <div class="catalog_item">
+                    <div class="description">
+                        <div>
+                            <p><a href={{good.link()}}>{{good.name}}</a></p>
+                        </div>
+                        <div>
+                            <a href={{good.link()}}><img class=BuylistImage src="{{ url_for('static', filename=good.photo_link) }}" alt="Флешка №1"></a>
+                        </div>
+                    </div>
+                    <div class="description">
+                        <p>{{good.name}}</p>
+                        <p>16 GB</p>
+                        <p>Цвет: {{good.colour}}</p>
+                        <p>Цена: {{good.price.price}} рублей</p>
+                        <button type="button" class="btn btn-primary">Купить</button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+{% endblock %}
