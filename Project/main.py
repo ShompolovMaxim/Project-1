@@ -31,7 +31,7 @@ def catalog():
     return render_template('catalog.html',goods=goods)
 
 @app.route('/product/', methods=['GET', 'POST'])
-def product1():
+def product():
     good_id=int(request.args.get('good_id',-1))
     goods=Goods.query.all()
     for i in goods:
