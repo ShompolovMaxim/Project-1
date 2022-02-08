@@ -1,9 +1,9 @@
 from flask import *
-from ORM import *
+from init import app
+from ORM import Feedback, Goods, db
+#from ORM import *
 
-#app = Flask(__name__)
 
-feedback=[]
 
 @app.route('/')
 def main():
@@ -17,7 +17,7 @@ def about_us():
         if name!='' and review!='':
             db.session.add(Feedback(name=name,review=review))
             db.session.commit()
-        name,review='',''
+            name,review='',''
     return render_template('About_us.html',feedback=Feedback.query.all())
 
 @app.route('/catalog/', methods=['GET', 'POST'])
