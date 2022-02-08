@@ -1,14 +1,13 @@
 from flask import *
-
 from ORM import *
 
 #app = Flask(__name__)
 
 feedback=[]
 
-app = Flask(__name__)
-
-
+@app.route('/')
+def main():
+    return render_template('Main.html')
 
 @app.route('/about_us/', methods=['GET', 'POST'])
 def about_us():
