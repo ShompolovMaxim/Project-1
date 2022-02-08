@@ -20,9 +20,12 @@
         </form>
         {% if feedback %}
             <div>
-                <h3>Отзывы</h3>
+                <h3>{{feedback}}</h3>
                 {% for feed in feedback %}
-                    <div>{{feed.name+': '+feed.review}}</div>
+                    <div class="feedback">
+                        <p>{{feed.name+':'}}</p>
+                        <p>{{feed.review}}</p>
+                    </div>
                 {% endfor %}
             </div>
         {% endif %}

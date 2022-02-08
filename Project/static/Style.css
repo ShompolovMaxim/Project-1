@@ -70,6 +70,10 @@ p{
     outline:3px solid blue;
 }
 
+.feedback{
+    background-color: aquamarine;
+}
+
 @media screen and (max-width: 1100px) {
     body {
         background-color: yellow;

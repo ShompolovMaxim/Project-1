@@ -50,7 +50,7 @@ class Goods(db.Model):
     colour = db.Column(db.String(80))
 
     def link(self):
-        return '/product1?good_id='+str(self.id)
+        return '/product?good_id='+str(self.id)
     
 
 class Orders(db.Model):
