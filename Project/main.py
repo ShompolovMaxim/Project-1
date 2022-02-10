@@ -1,7 +1,7 @@
 from flask import *
 from init import app
 from ORM import Feedback, Customers, Goods, db
-
+from datetime import datetime
 
 
 @app.route('/')
@@ -10,6 +10,17 @@ def main():
 
 @app.route('/registration/', methods=['GET', 'POST'])
 def registration():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        surname = request.form.get('surname')
+        login = request.form.get('login')
+        password = request.form.get('password')
+        try:
+            db.session.add(Customers(name=name,surname=surname,login=login,password=password, registration_date = datetime.now()))
+            db.session.commit()
+            session['login'] = login
+        except:
+            flash('This login is already used', 'warning')
     return render_template('registration.html')
 
 @app.route('/sign_in/', methods=['GET', 'POST'])
@@ -33,6 +44,11 @@ def logout():
     if session.get('login'):
         session.pop('login')
     return redirect('/', code=302)
+
+@app.route('/profile/')
+def profile():
+    customer=Customers.query.filter_by(login=session['login']).one()
+    return render_template('profile.html',customer=customer)
 
 @app.route('/about_us/', methods=['GET', 'POST'])
 def about_us():
