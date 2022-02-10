@@ -18,7 +18,7 @@ class Customers(db.Model):
     email = db.Column(db.String(80), unique=True)
     registration_date = db.Column(db.DateTime, nullable=False)
     login = db.Column(db.String(80), unique=True)
-    password_hash = db.Column(db.Integer, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
     bank_card_number = db.Column(db.String(80))
     passport_series_and_number = db.Column(db.String(80), unique=True)
     passport_date_of_issue = db.Column(db.DateTime)
@@ -28,6 +28,9 @@ class Customers(db.Model):
     shop_card_buy_amount = db.Column(db.Integer)
     address = db.Column(db.String(80))
     age = db.Column(db.Integer)
+
+    def validate(self, password):
+        return self.password == password
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)

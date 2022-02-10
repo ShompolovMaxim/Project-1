@@ -1,7 +1,6 @@
 from flask import *
 from init import app
-from ORM import Feedback, Goods, db
-#from ORM import *
+from ORM import Feedback, Customers, Goods, db
 
 
 
@@ -9,9 +8,31 @@ from ORM import Feedback, Goods, db
 def main():
     return render_template('Main.html')
 
-@app.route('/sign_in/')
+@app.route('/registration/', methods=['GET', 'POST'])
+def registration():
+    return render_template('registration.html')
+
+@app.route('/sign_in/', methods=['GET', 'POST'])
 def sign_in():
+    if request.method == 'POST':
+        login = request.form.get('login')
+        password = request.form.get('password')
+        try:
+            if Customers.query.filter_by(login=login).one().validate(password):
+                session['login'] = login
+                flash(f'Добро пожаловать, {login}', 'success')
+                return redirect(url_for('main'), code=301)
+            else:
+                flash('Wrong login or password', 'warning')
+        except:
+            flash('Wrong login or password', 'danger')
     return render_template('sign_in.html')
+
+@app.route('/sign_out/')
+def logout():
+    if session.get('login'):
+        session.pop('login')
+    return redirect('/', code=302)
 
 @app.route('/about_us/', methods=['GET', 'POST'])
 def about_us():

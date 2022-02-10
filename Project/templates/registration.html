@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+    <form method="POST">
+        <legend>Регистрация:</legend>
+        <p>Имя:</p>
+        <input type="text" name="name" class="form-control" placeholder="Логин">
+        <p>Фамилия:</p>
+        <input type="text" name="surname" class="form-control" placeholder="Логин">
+        <p>Логин:</p>
+        <input type="text" name="login" class="form-control" placeholder="Логин">
+        <p>Пароль:</p>
+        <input type="password" name="password" class="form-control" placeholder="Пароль">
+        <input type="submit" value="Ввести" class="btn btn-primary">
+    </form>
+{% endblock %}
