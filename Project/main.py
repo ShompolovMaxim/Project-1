@@ -9,6 +9,10 @@ from ORM import Feedback, Goods, db
 def main():
     return render_template('Main.html')
 
+@app.route('/sign_in/')
+def sign_in():
+    return render_template('sign_in.html')
+
 @app.route('/about_us/', methods=['GET', 'POST'])
 def about_us():
     if request.method == 'POST':
@@ -17,7 +21,6 @@ def about_us():
         if name!='' and review!='':
             db.session.add(Feedback(name=name,review=review))
             db.session.commit()
-            name,review='',''
     return render_template('About_us.html',feedback=Feedback.query.all())
 
 @app.route('/catalog/', methods=['GET', 'POST'])
