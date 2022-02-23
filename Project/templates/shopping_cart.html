@@ -1,6 +1,21 @@
 {% extends "base.html" %}
-{% block title %}Главная{% endblock %}
+{% block title %}Корзина{% endblock %}
 {% block content %}
     <h1>Ваши товары</h1>
-    {%for}
+    <div>
+        {% for order in cart %}
+            <div>
+                <ul>
+                    <li class="order_item">{{ order.good.name }}</li>
+                    <li class="order_item"><img class="order_image" src="{{ url_for('static', filename=order.good.photo_link) }}" alt={{order.good.name}}></li>
+                    <li class="order_item">Количество: {{ order.quantity }}</li>
+                    <li class="order_item">Стоимость: {{ order.good.price.price*order.quantity }} руб.</li>
+                </ul>
+            </div>
+        {% endfor %}
+        <div>Суммарная стоимость: {{total}} руб.</div>
+    </div>
+    <form method="POST">
+        <input type="submit" value="Сформировать заказ" class="btn btn-primary">
+    </form>
 {% endblock %}

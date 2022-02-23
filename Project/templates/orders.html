@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Мои заказы{% endblock %}
+{% block content %}
+    {%for order in orders %}
+    <div>
+        <div>Заказ #{{order}}:</div>
+        {% for item in orders[order] %}
+            <div>
+                <ul>
+                    <li class="order_item">{{ item.good.name }}</li>
+                    <li class="order_item"><img class="order_image" src="{{ url_for('static', filename=item.good.photo_link) }}" alt={{item.good.name}}></li>
+                    <li class="order_item">Количество: {{ item.quantity }}</li>
+                    <li class="order_item">Стоимость: {{ item.good.price.price*item.quantity }} руб.</li>
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+{% endblock %}

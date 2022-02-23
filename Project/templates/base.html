@@ -17,13 +17,12 @@
                 <li class='menu_link'><a href="/catalog/">Каталог</a></li>
                 <li class='menu_link'><a href="/about_us/">О нас</a></li>
                 {% if session['login'] %}
+                    <li class='menu_link'><a href="/shopping_cart/">Корзина</a></li>
+                    <li class='menu_link'><a href="/orders/">Заказы</a></li>
                     <li class='menu_link'><a href="/profile/">Профиль</a></li>
-                {% else %}
-                    <li class='menu_link'><a href="/sign_in/">Авторизация</a></li>
-                {% endif %}
-                {% if session['login'] %}
                     <li class='menu_link'><a href="/sign_out/">Выйти</a></li>
                 {% else %}
+                    <li class='menu_link'><a href="/sign_in/">Авторизация</a></li>
                     <li class='menu_link'><a href="/registration/">Регистрация</a></li>
                 {% endif %}
             </ul>

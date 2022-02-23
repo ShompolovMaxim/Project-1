@@ -20,7 +20,10 @@
                         <p>16 GB</p>
                         <p>Цвет: {{good.colour}}</p>
                         <p>Цена: {{good.price.price}} рублей</p>
-                        <button type="button" class="btn btn-primary">Купить</button>
+                        <form method="POST">
+                            <input type="hidden" name="buy" value="buy{{good.id}}">
+                            <input type="submit" name="buy" value="Купить" class="btn btn-primary">
+                        </form>
                     </div>
                 </div>
             {% endfor %}

@@ -1,8 +1,22 @@
 from flask import *
 from init import app
-from ORM import Feedback, Customers, Goods, db
+from ORM import Feedback, Customers, Goods, Orders, Shopping_cart, db
 from datetime import datetime
 
+def buy(good_id):
+    login = session.get('login')
+    good = list(filter(lambda x: x.id==good_id,Goods.query.all()))[0]
+    if good.quantity > 0:
+        cust = list(filter(lambda x: x.login==login,Customers.query.all()))[0]
+        cart_item=list(filter(lambda x: x.good.id==good_id and x.customer.login==login, Shopping_cart.query.all()))
+        if cart_item==[]:
+            db.session.add(Shopping_cart(quantity = 1, good = good, customer=cust))
+        else:
+            cart_item[0].quantity += 1
+        good.quantity -= 1
+        db.session.commit()
+    else:
+        flash('Нет на складе', 'warning')
 
 @app.route('/')
 def main():
@@ -62,6 +76,12 @@ def about_us():
 
 @app.route('/catalog/', methods=['GET', 'POST'])
 def catalog():
+    if request.method == 'POST':
+        action = request.form['buy']
+        if 'buy' in action:
+            good_id = int(action[3:])
+            buy(good_id)
+
     min_price=int(request.args.get('min_price',0))
     max_price=int(request.args.get('max_price',10**9))
     goods=[]
@@ -72,12 +92,51 @@ def catalog():
 
 @app.route('/product/', methods=['GET', 'POST'])
 def product():
+    login = session.get('login')
+    if request.method == 'POST':
+        good_id = int(request.args.get('good_id', 0))
+        buy(good_id)
+
     good_id=int(request.args.get('good_id',-1))
-    goods=Goods.query.all()
-    for i in goods:
-        if i.id==good_id:
-            break
-    return render_template('Product.html',good=i)
+
+    cart = list(filter(lambda x: x.customer.login == login and x.good.id == good_id, Shopping_cart.query.all()))
+    if cart == []:
+        quantity = 0
+    else:
+        quantity = cart[0].quantity
+
+    return render_template('Product.html', good=list(filter(lambda x: x.id == good_id, Goods.query.all()))[0], quantity = quantity)
+
+@app.route('/shopping_cart/', methods=['GET', 'POST'])
+def shopping_cart():
+    login = session.get('login')
+    if request.method == 'POST':
+        cust = list(filter(lambda x: x.login==login,Customers.query.all()))[0]
+        cust.total_orders += 1
+        number = cust.id*10**8+cust.total_orders
+        for i in list(filter(lambda x: x.customer.login==login,Shopping_cart.query.all())):
+            db.session.add(Orders(number_of_order=number, quantity=i.quantity, good=i.good, customer=i.customer, date=datetime.now(), status='collecting'))
+            db.session.delete(i)
+            i.good.quantity -= i.quantity
+        db.session.commit()
+
+    cart=list(filter(lambda x: x.customer.login==login,Shopping_cart.query.all()))
+    cart.sort(key = lambda x: x.good.id)
+    total = 0
+    for i in cart:
+        total += i.quantity * i.good.price.price
+    return render_template('shopping_cart.html',cart = cart, total = total)
+
+@app.route('/orders/')
+def orders():
+    orders_dict = dict()
+    login = session.get('login')
+    for i in list(filter(lambda x: x.customer.login==login,Orders.query.all())):
+        if i.number_of_order not in orders_dict:
+            orders_dict[i.number_of_order]=[i]
+        else:
+            orders_dict[i.number_of_order].append(i)
+    return render_template('orders.html',orders=orders_dict)
 
 if __name__ == '__main__':
     app.run(debug=True)

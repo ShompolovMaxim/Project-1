@@ -74,6 +74,16 @@ p{
     background-color: aquamarine;
 }
 
+.order_item{
+    display: inline-block;
+}
+
+.order_image{
+    width: 150px; 
+    height: 150px;
+    display: inline-block;
+}
+
 @media screen and (max-width: 1100px) {
     body {
         background-color: yellow;
