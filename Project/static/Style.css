@@ -50,6 +50,7 @@ p{
 
 .catalog_item{
     display: inline-block;
+    padding: 20px 10px;
 }
 
 .BuylistImage{
@@ -62,6 +63,7 @@ p{
 .description{
     display: inline-block;
     vertical-align: bottom;
+    line-height: 1;
 }
 
 .productImage{
@@ -74,9 +76,17 @@ p{
     background-color: aquamarine;
 }
 
-.order_item{
-    display: inline-block;
+.order{
+    padding: 30px 0px;
 }
+
+th{
+    border: 1px solid black;
+ }
+
+td{
+    border: 1px solid black;
+ }
 
 .order_image{
     width: 150px; 

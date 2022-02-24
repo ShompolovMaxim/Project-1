@@ -121,8 +121,6 @@ def product():
 
 @app.route('/shopping_cart/', methods=['GET', 'POST'])
 def shopping_cart():
-#    return 'hello_world'
-    #http://127.0.0.1:5000/shopping_cart/
     login = session.get('login')
 
     if not login:
@@ -158,12 +156,16 @@ def orders():
         return redirect(url_for('main'), code=302)
 
     orders_dict = dict()
+    total = dict()
+
     for i in list(filter(lambda x: x.customer.login==login,Orders.query.all())):
         if i.number_of_order not in orders_dict:
             orders_dict[i.number_of_order]=[i]
+            total[i.number_of_order]=i.good.price.price*i.quantity
         else:
             orders_dict[i.number_of_order].append(i)
-    return render_template('orders.html',orders=orders_dict)
+            total[i.number_of_order]+=i.good.price.price*i.quantity
+    return render_template('orders.html',orders=orders_dict, total=total)
 
 if __name__ == '__main__':
     app.run(debug=True)

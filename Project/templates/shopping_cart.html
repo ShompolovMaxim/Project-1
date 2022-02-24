@@ -3,16 +3,22 @@
 {% block content %}
     <h1>Ваши товары</h1>
     <div>
-        {% for order in cart %}
-            <div>
-                <ul>
-                    <li class="order_item">{{ order.good.name }}</li>
-                    <li class="order_item"><img class="order_image" src="{{ url_for('static', filename=order.good.photo_link) }}" alt={{order.good.name}}></li>
-                    <li class="order_item">Количество: {{ order.quantity }}</li>
-                    <li class="order_item">Стоимость: {{ order.good.price.price*order.quantity }} руб.</li>
-                </ul>
-            </div>
-        {% endfor %}
+        <table>
+            <tr>
+                <th>Название товара</th>
+                <th>Изображение</th>
+                <th>Количество</th>
+                <th>Стоимость</th>
+            </tr>
+            {% for order in cart %}
+                <tr>
+                    <td>{{ order.good.name }}</td>
+                    <td><img class="order_image" src="{{ url_for('static', filename=order.good.photo_link) }}" alt={{order.good.name}}></td>
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.good.price.price*order.quantity }} руб.</td>
+                </tr>
+            {% endfor %}
+        </table>
         <div>Суммарная стоимость: {{total}} руб.</div>
     </div>
     <div>
