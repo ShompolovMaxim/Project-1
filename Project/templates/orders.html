@@ -8,15 +8,17 @@
                 <tr>
                     <th>Название товара</th>
                     <th>Изображнеие</th>
+                    <th>Цена</th>
                     <th>Количество</th>
                     <th>Стоимость</th>
                 </tr>
                 {% for item in orders[order] %}
                     <tr>
-                        <td>{{ item.good.name }}</td>
-                        <td><img class="order_image" src="{{ url_for('static', filename=item.good.photo_link) }}" alt={{item.good.name}}></td>
+                        <td><a href={{item.good.link()}}>{{ item.good.name }}</a></td>
+                        <td><a href={{item.good.link()}}><img class="order_image" src="{{ url_for('static', filename=item.good.photo_link) }}" alt={{item.good.name}}></a></td>
+                        <td>{{ item.price.price }} руб.</td>
                         <td>{{ item.quantity }}</td>
-                        <td>{{ item.good.price.price*item.quantity }} руб.</td>
+                        <td>{{ item.price.price*item.quantity }} руб.</td>
                     </tr>
                 {% endfor %}
             </table>

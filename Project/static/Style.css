@@ -82,10 +82,12 @@ p{
 
 th{
     border: 1px solid black;
+    text-align: center
  }
 
 td{
     border: 1px solid black;
+    text-align: center
  }
 
 .order_image{

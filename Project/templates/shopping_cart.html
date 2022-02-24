@@ -7,13 +7,15 @@
             <tr>
                 <th>Название товара</th>
                 <th>Изображение</th>
+                <th>Цена</th>
                 <th>Количество</th>
                 <th>Стоимость</th>
             </tr>
             {% for order in cart %}
                 <tr>
-                    <td>{{ order.good.name }}</td>
-                    <td><img class="order_image" src="{{ url_for('static', filename=order.good.photo_link) }}" alt={{order.good.name}}></td>
+                    <td><a href={{order.good.link()}}>{{ order.good.name }}</a></td>
+                    <td><a href={{order.good.link()}}><img class="order_image" src="{{ url_for('static', filename=order.good.photo_link) }}" alt={{order.good.name}}></a></td>
+                    <td>{{ order.good.price.price }} руб.</td>
                     <td>{{ order.quantity }}</td>
                     <td>{{ order.good.price.price*order.quantity }} руб.</td>
                 </tr>

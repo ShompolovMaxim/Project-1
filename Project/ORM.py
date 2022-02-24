@@ -62,6 +62,8 @@ class Orders(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     good_id = db.Column(db.Integer, db.ForeignKey('goods.id'))
     good = db.relationship('Goods', backref=db.backref('orders', lazy=False))
+    price_id = db.Column(db.Integer, db.ForeignKey('prices.id'))
+    price = db.relationship('Prices', backref=db.backref('orders', lazy=False))
     customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
     customer = db.relationship('Customers', backref=db.backref('orders', lazy=False))
     date = db.Column(db.DateTime, nullable=False)

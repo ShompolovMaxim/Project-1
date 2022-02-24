@@ -133,7 +133,7 @@ def shopping_cart():
             cust.total_orders += 1
             number = cust.id*10**8+cust.total_orders
             for i in list(filter(lambda x: x.customer.login==login,Shopping_cart.query.all())):
-                db.session.add(Orders(number_of_order=number, quantity=i.quantity, good=i.good, customer=i.customer, date=datetime.now(), status='collecting'))
+                db.session.add(Orders(number_of_order=number, quantity=i.quantity, good=i.good, customer=i.customer, date=datetime.now(), status='collecting', price=i.good.price))
                 db.session.delete(i)
                 i.good.quantity -= i.quantity
         elif action == 'clear':
@@ -161,10 +161,12 @@ def orders():
     for i in list(filter(lambda x: x.customer.login==login,Orders.query.all())):
         if i.number_of_order not in orders_dict:
             orders_dict[i.number_of_order]=[i]
-            total[i.number_of_order]=i.good.price.price*i.quantity
+            total[i.number_of_order]=i.price.price*i.quantity
         else:
             orders_dict[i.number_of_order].append(i)
-            total[i.number_of_order]+=i.good.price.price*i.quantity
+            total[i.number_of_order]+=i.price.price*i.quantity
+    for i in orders_dict:
+        orders_dict[i].sort(key=lambda x:x.good.id)
     return render_template('orders.html',orders=orders_dict, total=total)
 
 if __name__ == '__main__':
