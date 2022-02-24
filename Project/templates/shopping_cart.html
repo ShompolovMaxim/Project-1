@@ -15,7 +15,16 @@
         {% endfor %}
         <div>Суммарная стоимость: {{total}} руб.</div>
     </div>
-    <form method="POST">
-        <input type="submit" value="Сформировать заказ" class="btn btn-primary">
-    </form>
+    <div>
+        <div class="shopping_cart_button">
+            <form method="POST">
+                <button type="submit" name="action" value="clear" class="btn btn-primary">Очистить корзину</button>
+            </form>
+        </div>
+        <div class="shopping_cart_button">
+            <form method="POST">
+                <button type="submit" name="action" value="make" class="btn btn-primary">Сформировать заказ</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

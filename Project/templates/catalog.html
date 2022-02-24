@@ -20,9 +20,11 @@
                         <p>16 GB</p>
                         <p>Цвет: {{good.colour}}</p>
                         <p>Цена: {{good.price.price}} рублей</p>
+                        {% if good.id in quantity %}
+                            <p>В корзине: {{quantity[good.id]}}</p>
+                        {% endif %}
                         <form method="POST">
-                            <input type="hidden" name="buy" value="buy{{good.id}}">
-                            <input type="submit" name="buy" value="Купить" class="btn btn-primary">
+                            <button type="submit" name="buy" value="{{good.id}}" class="btn btn-primary">Купить</button>
                         </form>
                     </div>
                 </div>

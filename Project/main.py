@@ -5,18 +5,23 @@ from datetime import datetime
 
 def buy(good_id):
     login = session.get('login')
-    good = list(filter(lambda x: x.id==good_id,Goods.query.all()))[0]
-    if good.quantity > 0:
-        cust = list(filter(lambda x: x.login==login,Customers.query.all()))[0]
-        cart_item=list(filter(lambda x: x.good.id==good_id and x.customer.login==login, Shopping_cart.query.all()))
-        if cart_item==[]:
-            db.session.add(Shopping_cart(quantity = 1, good = good, customer=cust))
+    if login:
+        good = list(filter(lambda x: x.id==good_id,Goods.query.all()))[0]
+        if good.quantity > 0:
+            cust = list(filter(lambda x: x.login==login,Customers.query.all()))[0]
+            cart_item=list(filter(lambda x: x.good.id==good_id and x.customer.login==login, Shopping_cart.query.all()))
+            if cart_item==[]:
+                db.session.add(Shopping_cart(quantity = 1, good = good, customer=cust))
+            else:
+                cart_item[0].quantity += 1
+            good.quantity -= 1
+            db.session.commit()
         else:
-            cart_item[0].quantity += 1
-        good.quantity -= 1
-        db.session.commit()
+            flash('Нет на складе', 'warning')
     else:
-        flash('Нет на складе', 'warning')
+        flash('Авторизуйтесь, чтобы совершать покупки.','warning')
+        return 'redirect_to_sign_in'
+
 
 @app.route('/')
 def main():
@@ -78,24 +83,31 @@ def about_us():
 def catalog():
     if request.method == 'POST':
         action = request.form['buy']
-        if 'buy' in action:
-            good_id = int(action[3:])
-            buy(good_id)
+        good_id = int(action)
+        if buy(good_id):
+            return redirect(url_for('sign_in'), code=301)
 
     min_price=int(request.args.get('min_price',0))
     max_price=int(request.args.get('max_price',10**9))
+    login = session.get('login')
     goods=[]
+    quantity = dict()
     for i in Goods.query.all():
         if min_price<=i.price.price<=max_price:
             goods.append(i)
-    return render_template('catalog.html',goods=goods)
+            cart = list(filter(lambda x: x.customer.login == login and x.good.id == i.id, Shopping_cart.query.all()))
+            if not cart == []:
+                quantity[i.id] = cart[0].quantity
+
+    return render_template('catalog.html',goods=goods, quantity = quantity)
 
 @app.route('/product/', methods=['GET', 'POST'])
 def product():
     login = session.get('login')
     if request.method == 'POST':
         good_id = int(request.args.get('good_id', 0))
-        buy(good_id)
+        if buy(good_id):
+            return redirect(url_for('sign_in'), code=301)
 
     good_id=int(request.args.get('good_id',-1))
 
@@ -109,15 +121,26 @@ def product():
 
 @app.route('/shopping_cart/', methods=['GET', 'POST'])
 def shopping_cart():
+#    return 'hello_world'
+    #http://127.0.0.1:5000/shopping_cart/
     login = session.get('login')
+
+    if not login:
+        return redirect(url_for('main'), code=302)
+
     if request.method == 'POST':
-        cust = list(filter(lambda x: x.login==login,Customers.query.all()))[0]
-        cust.total_orders += 1
-        number = cust.id*10**8+cust.total_orders
-        for i in list(filter(lambda x: x.customer.login==login,Shopping_cart.query.all())):
-            db.session.add(Orders(number_of_order=number, quantity=i.quantity, good=i.good, customer=i.customer, date=datetime.now(), status='collecting'))
-            db.session.delete(i)
-            i.good.quantity -= i.quantity
+        action = request.form['action']
+        if action == 'make':
+            cust = list(filter(lambda x: x.login==login,Customers.query.all()))[0]
+            cust.total_orders += 1
+            number = cust.id*10**8+cust.total_orders
+            for i in list(filter(lambda x: x.customer.login==login,Shopping_cart.query.all())):
+                db.session.add(Orders(number_of_order=number, quantity=i.quantity, good=i.good, customer=i.customer, date=datetime.now(), status='collecting'))
+                db.session.delete(i)
+                i.good.quantity -= i.quantity
+        elif action == 'clear':
+            for i in list(filter(lambda x: x.customer.login==login,Shopping_cart.query.all())):
+                db.session.delete(i)
         db.session.commit()
 
     cart=list(filter(lambda x: x.customer.login==login,Shopping_cart.query.all()))
@@ -129,8 +152,12 @@ def shopping_cart():
 
 @app.route('/orders/')
 def orders():
-    orders_dict = dict()
     login = session.get('login')
+
+    if not login:
+        return redirect(url_for('main'), code=302)
+
+    orders_dict = dict()
     for i in list(filter(lambda x: x.customer.login==login,Orders.query.all())):
         if i.number_of_order not in orders_dict:
             orders_dict[i.number_of_order]=[i]
