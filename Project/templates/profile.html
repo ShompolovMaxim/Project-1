@@ -4,4 +4,10 @@
     <p>Имя: {{customer.name}}</p>
     <p>Фамилия: {{customer.surname}}</p>
     <p>Логин: {{customer.login}}</p>
+    {% if customer.phone_number %}
+        <p>Номер телефона: {{customer.phone_number}}</p>
+    {% endif %}
+    {% if customer.email %}
+        <p>E-mail: {{customer.email}}</p>
+    {% endif %}
 {% endblock %}

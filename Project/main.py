@@ -34,12 +34,18 @@ def registration():
         surname = request.form.get('surname')
         login = request.form.get('login')
         password = request.form.get('password')
-        try:
-            db.session.add(Customers(name=name,surname=surname,login=login,password=password, registration_date = datetime.now()))
-            db.session.commit()
-            session['login'] = login
-        except:
-            flash('This login is already used', 'warning')
+        phone_number = request.form.get('phone_number')
+        email = request.form.get('email')
+        if name and surname and login and password:
+            try:
+                db.session.add(Customers(name=name,surname=surname,login=login,password=password, registration_date = datetime.now(), phone_number = phone_number, email = email, total_orders = 0))
+                db.session.commit()
+                session['login'] = login
+                return redirect(url_for('main'), code=302)
+            except:
+                flash('This login is already used', 'warning')
+        else:
+            flash('Необходимо заполнить все поля, помеченные *', 'warning')
     return render_template('registration.html')
 
 @app.route('/sign_in/', methods=['GET', 'POST'])

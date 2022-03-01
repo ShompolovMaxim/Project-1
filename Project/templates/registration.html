@@ -4,21 +4,30 @@
     <form method="POST">
         <legend>Регистрация:</legend>
         <div>
-            <p>Имя:</p>
-            <input type="text" name="name" class="form-control" placeholder="Логин">
+            <p>Имя:*</p>
+            <input type="text" name="name" class="form-control" placeholder="Имя">
         </div>
         <div>
-            <p>Фамилия:</p>
-            <input type="text" name="surname" class="form-control" placeholder="Логин">
+            <p>Фамилия:*</p>
+            <input type="text" name="surname" class="form-control" placeholder="Фамилия">
         </div>
         <div>
-            <p>Логин:</p>
+            <p>Логин:*</p>
             <input type="text" name="login" class="form-control" placeholder="Логин">
         </div>
         <div>
-            <p>Пароль:</p>
+            <p>Пароль:*</p>
             <input type="password" name="password" class="form-control" placeholder="Пароль">
         </div>
-        <input type="submit" value="Ввести" class="btn btn-primary">
+        <div>
+            <p>Номер телефона:</p>
+            <input type="text" name="phone_number" class="form-control" placeholder="Номер телефона">
+        </div>
+        <div>
+            <p>E-mail:</p>
+            <input type="text" name="email" class="form-control" placeholder="E-mail">
+        </div>
+        <div>* - поле обязательно для заполнения</div>
+        <input type="submit" value="Зарегестрироваться" class="btn btn-primary">
     </form>
 {% endblock %}
