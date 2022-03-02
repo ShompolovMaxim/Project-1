@@ -164,7 +164,7 @@ def orders():
     orders_dict = dict()
     total = dict()
 
-    for i in list(filter(lambda x: x.customer.login==login,Orders.query.all())):
+    for i in sorted(list(filter(lambda x: x.customer.login==login,Orders.query.all())),key=lambda x:-x.number_of_order):
         if i.number_of_order not in orders_dict:
             orders_dict[i.number_of_order]=[i]
             total[i.number_of_order]=i.price.price*i.quantity
