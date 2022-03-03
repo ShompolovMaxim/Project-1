@@ -25,7 +25,11 @@ def buy(good_id):
 
 @app.route('/')
 def main():
-    return render_template('Main.html')
+    login = session.get('login')
+    customer = None
+    if login:
+        customer=Customers.query.filter_by(login=login).one()
+    return render_template('Main.html', customer=customer)
 
 @app.route('/registration/', methods=['GET', 'POST'])
 def registration():
@@ -38,7 +42,9 @@ def registration():
         email = request.form.get('email')
         if name and surname and login and password:
             try:
-                db.session.add(Customers(name=name,surname=surname,login=login,password=password, registration_date = datetime.now(), phone_number = phone_number, email = email, total_orders = 0))
+                customer = Customers(name=name,surname=surname,login=login, registration_date = datetime.now(), phone_number = phone_number, email = email, total_orders = 0)
+                customer.hash_password(password)
+                db.session.add(customer)
                 db.session.commit()
                 session['login'] = login
                 return redirect(url_for('main'), code=302)
@@ -70,9 +76,35 @@ def logout():
         session.pop('login')
     return redirect('/', code=302)
 
-@app.route('/profile/')
+@app.route('/profile/', methods=['GET', 'POST'])
 def profile():
-    customer=Customers.query.filter_by(login=session['login']).one()
+    login = session.get('login')
+    customer=Customers.query.filter_by(login=login).one()
+
+    if not login:
+        return redirect(url_for('main'), code=302)
+
+    if request.method == 'POST':
+        name = request.form.get('name')
+        surname = request.form.get('surname')
+        login = request.form.get('login')
+        new_password = request.form.get('new_password')
+        if name and surname and login:
+            try:
+                customer.name = request.form.get('name')
+                customer.surname = request.form.get('surname')
+                customer.login = request.form.get('login')
+                customer.phone_number = request.form.get('phone_number')
+                customer.email = request.form.get('email')
+                if new_password:
+                    customer.hash_password(new_password)
+                db.session.commit()
+                session['login'] = login
+            except:
+                flash('This login is already used', 'warning')
+        else:
+            flash('Необходимо заполнить все поля, помеченные *', 'warning')
+    
     return render_template('profile.html',customer=customer)
 
 @app.route('/about_us/', methods=['GET', 'POST'])
@@ -174,6 +206,17 @@ def orders():
     for i in orders_dict:
         orders_dict[i].sort(key=lambda x:x.good.id)
     return render_template('orders.html',orders=orders_dict, total=total)
+
+@app.route('/customers_list/')
+def customers_list():
+    login = session.get('login')
+    customer=Customers.query.filter_by(login=login).one()
+
+    if not login or customer.admin == 0:
+        return redirect(url_for('main'), code=302)
+
+    customers = Customers.query.all()
+    return render_template('customers_list.html',customers=customers)
 
 if __name__ == '__main__':
     app.run(debug=True)

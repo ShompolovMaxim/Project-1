@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from init import db
 
+import hashlib
 from datetime import datetime
 
 class Categories(db.Model):
@@ -19,6 +20,7 @@ class Customers(db.Model):
     login = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(200), nullable=False)
     total_orders = db.Column(db.Integer, nullable=False)
+    admin = db.Column(db.Integer)
 
     patronymic = db.Column(db.String(80))
     bank_card_number = db.Column(db.String(80))
@@ -31,8 +33,11 @@ class Customers(db.Model):
     address = db.Column(db.String(80))
     age = db.Column(db.Integer)
 
+    def hash_password(self, password):
+        self.password = hashlib.md5(password.encode('utf8')).hexdigest()
+
     def validate(self, password):
-        return self.password == password
+        return self.password == hashlib.md5(password.encode('utf8')).hexdigest()
 
 class Feedback(db.Model):
     id = db.Column(db.Integer, primary_key=True)
