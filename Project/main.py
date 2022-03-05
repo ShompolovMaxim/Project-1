@@ -94,8 +94,14 @@ def profile():
                 customer.name = request.form.get('name')
                 customer.surname = request.form.get('surname')
                 customer.login = request.form.get('login')
-                customer.phone_number = request.form.get('phone_number')
-                customer.email = request.form.get('email')
+                if request.form.get('phone_number'):
+                    customer.phone_number = request.form.get('phone_number')
+                else:
+                    customer.phone_number = None
+                if request.form.get('email'):
+                    customer.email = request.form.get('email')
+                else:
+                    customer.email = None
                 if new_password:
                     customer.hash_password(new_password)
                 db.session.commit()
