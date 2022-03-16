@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from app import db
+from app.app import db
 
 import hashlib
 from datetime import datetime
