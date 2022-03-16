@@ -1,6 +1,6 @@
 from flask import *
-from init import app
-from ORM import Feedback, Customers, Goods, Orders, Shopping_cart, db
+from app import app, db
+from ORM import Feedback, Customers, Goods, Orders, Shopping_cart
 from datetime import datetime
 
 def buy(good_id):
