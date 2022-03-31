@@ -13,17 +13,17 @@
         <header>
             <img class='logot' src="{{ url_for('static', filename='log.jpg') }}" alt="Логотип"></a>
             <ul class="menu_links">
-                <li class='menu_link'><a href="/">Главная</a></li>
-                <li class='menu_link'><a href="/catalog/">Каталог</a></li>
-                <li class='menu_link'><a href="/about_us/">О нас</a></li>
+                <li class='menu_link'><a href="/" class="text">Главная</a></li>
+                <li class='menu_link'><a href="/catalog/" class="text">Каталог</a></li>
+                <li class='menu_link'><a href="/about_us/" class="text">О нас</a></li>
                 {% if session['login'] %}
-                    <li class='menu_link'><a href="/shopping_cart/">Корзина</a></li>
-                    <li class='menu_link'><a href="/orders/">Заказы</a></li>
-                    <li class='menu_link'><a href="/profile/">Профиль</a></li>
-                    <li class='menu_link'><a href="/sign_out/">Выйти</a></li>
+                    <li class='menu_link'><a href="/shopping_cart/" class="text">Корзина</a></li>
+                    <li class='menu_link'><a href="/orders/" class="text">Заказы</a></li>
+                    <li class='menu_link'><a href="/profile/" class="text">Профиль</a></li>
+                    <li class='menu_link'><a href="/sign_out/" class="text">Выйти</a></li>
                 {% else %}
-                    <li class='menu_link'><a href="/sign_in/">Авторизация</a></li>
-                    <li class='menu_link'><a href="/registration/">Регистрация</a></li>
+                    <li class='menu_link'><a href="/sign_in/" class="text">Авторизация</a></li>
+                    <li class='menu_link'><a href="/registration/" class="text">Регистрация</a></li>
                 {% endif %}
             </ul>
         </header>
