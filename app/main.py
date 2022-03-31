@@ -115,13 +115,14 @@ def profile():
 
 @app.route('/about_us/', methods=['GET', 'POST'])
 def about_us():
+    login = session.get('login')
     if request.method == 'POST':
         name = request.form.get('name')
         review = request.form.get('review')
         if name!='' and review!='':
             db.session.add(Feedback(name=name,review=review))
             db.session.commit()
-    return render_template('About_us.html',feedback=Feedback.query.all())
+    return render_template('About_us.html',feedback=Feedback.query.all(),login=login)
 
 @app.route('/catalog/', methods=['GET', 'POST'])
 def catalog():
