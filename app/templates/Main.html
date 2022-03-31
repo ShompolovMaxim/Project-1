@@ -3,8 +3,4 @@
 {% block content %}
     <h1>Магазин техники</h1>
     <p>Мы продаём бытовую и компьютерную технику различных видов</p>
-    {% if customer and customer.admin == 1 %}
-        <ul>
-            <li><a href="/customers_list/">Список клиентов</a></li>
-    {% endif %}
 {% endblock %}

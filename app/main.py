@@ -125,14 +125,28 @@ def about_us():
 
 @app.route('/catalog/', methods=['GET', 'POST'])
 def catalog():
-    if request.method == 'POST':
-        action = request.form['buy']
-        good_id = int(action)
-        if buy(good_id):
-            return redirect(url_for('sign_in'), code=301)
-
     min_price=int(request.args.get('min_price',0))
     max_price=int(request.args.get('max_price',10**9))
+
+    if request.method == 'POST':
+        if 'buy' in request.form:
+            action = request.form['buy']
+            good_id = int(action)
+            if buy(good_id):
+                return redirect(url_for('sign_in'), code=302)
+        elif 'sort' in request.form:
+            try:
+                min_price = int(request.form.get('min_price', 0))
+            except:
+                flash('Некорректные данные','warning')
+            try:
+                max_price = int(request.form.get('max_price', 10**9))
+            except:
+                flash('Некорректные данные','warning')
+
+    min_price = max(0,min_price)
+    max_price= min(max_price,max([i.price.price for i in Goods.query.all()]))
+
     login = session.get('login')
     goods=[]
     quantity = dict()
@@ -143,7 +157,7 @@ def catalog():
             if not cart == []:
                 quantity[i.id] = cart[0].quantity
 
-    return render_template('catalog.html',goods=goods, quantity = quantity)
+    return render_template('catalog.html',goods=goods, quantity = quantity, min_price = min_price, max_price = max_price)
 
 @app.route('/product/', methods=['GET', 'POST'])
 def product():

@@ -1,8 +1,26 @@
 {% extends "base.html" %}
 {% block title %}Каталог{% endblock %}
 {% block content %}
+    <div>
+        
         <h1>Каталог</h1>
         <h3>Флешки</h3>
+        
+        <div>
+            <form method="POST">
+                <div class = 'filter'>
+                    <div>Минимальная цена:</div>
+                    <input type="text" name="min_price" class="form-control" value="{{ min_price }}">
+                </div>
+                <div class = 'filter'>
+                    <div>Максимальная цена:</div>
+                    <input type="text" name="max_price" class="form-control" value="{{ max_price }}">
+                </div>
+                <div class = 'filter'>
+                    <button type="submit" name="sort" value="sort" class="btn btn-primary">Применить</button>
+                </div>
+            </form>
+        </div>
 
         <div class='catalog_items'>
             {% for good in goods %}
@@ -29,4 +47,5 @@
                 </div>
             {% endfor %}
         </div>
+    </div>
 {% endblock %}
