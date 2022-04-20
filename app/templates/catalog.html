@@ -6,7 +6,7 @@
         <h1>Каталог</h1>
         <h3>Флешки</h3>
         
-        <div>
+        <div class="filters">
             <form method="POST">
                 <div class = 'filter'>
                     <div>Минимальная цена:</div>
@@ -16,7 +16,11 @@
                     <div>Максимальная цена:</div>
                     <input type="text" name="max_price" class="form-control" value="{{ max_price }}">
                 </div>
-                <div class = 'filter'>
+                <div class="filter">
+                    <div>В наличии:</div>
+                    <input type="checkbox" id="scales" name="in_stock" {% if in_stock %}checked{% endif %}>
+                </div>
+                <div>
                     <button type="submit" name="sort" value="sort" class="btn btn-primary">Применить</button>
                 </div>
             </form>
@@ -37,6 +41,7 @@
                         <p>16 GB</p>
                         <p>Цвет: {{good.colour}}</p>
                         <p>Цена: {{good.price.price}} рублей</p>
+                        <p>В наличии: {{ good.quantity }} штук</p>
                         {% if good.id in quantity %}
                             <p>В корзине: {{quantity[good.id]}}</p>
                         {% endif %}

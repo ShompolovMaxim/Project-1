@@ -25,6 +25,12 @@ a{
     font-size: large;
 }
 
+.filter{
+    margin: 10px 0;
+    width: 20%;
+    display: inline-block;
+}
+
 .logot{
     width: 100px;
     height: 60px;
@@ -66,10 +72,6 @@ a{
     display: inline-block;
     vertical-align: bottom;
     line-height: 1;
-}
-
-.filter{
-    margin: 10px 0;
 }
 
 .productImage{

@@ -152,13 +152,13 @@ def catalog():
     goods=[]
     quantity = dict()
     for i in Goods.query.all():
-        if min_price<=i.price.price<=max_price:
+        if min_price<=i.price.price<=max_price and (not request.form.get("in_stock") or i.quantity!=0):
             goods.append(i)
             cart = list(filter(lambda x: x.customer.login == login and x.good.id == i.id, Shopping_cart.query.all()))
             if not cart == []:
                 quantity[i.id] = cart[0].quantity
 
-    return render_template('catalog.html',goods=goods, quantity = quantity, min_price = min_price, max_price = max_price)
+    return render_template('catalog.html',goods=goods, quantity = quantity, min_price = min_price, max_price = max_price, in_stock = request.form.get("in_stock"))
 
 @app.route('/product/', methods=['GET', 'POST'])
 def product():
@@ -194,9 +194,9 @@ def shopping_cart():
             for i in list(filter(lambda x: x.customer.login==login,Shopping_cart.query.all())):
                 db.session.add(Orders(number_of_order=number, quantity=i.quantity, good=i.good, customer=i.customer, date=datetime.now(), status='collecting', price=i.good.price))
                 db.session.delete(i)
-                i.good.quantity -= i.quantity
         elif action == 'clear':
             for i in list(filter(lambda x: x.customer.login==login,Shopping_cart.query.all())):
+                i.good.quantity+=i.quantity
                 db.session.delete(i)
         db.session.commit()
 
