@@ -48,6 +48,7 @@ a{
     display: inline-block;
     margin-right: 20px;
     font-size: 120%;
+    font-style: italic;
 }
 
 .container{
@@ -72,6 +73,11 @@ a{
     display: inline-block;
     vertical-align: bottom;
     line-height: 1;
+    font-size: large;
+}
+
+div{
+    margin-top: 5px;
 }
 
 .productImage{
@@ -96,6 +102,11 @@ th{
 td{
     border: 1px solid black;
     text-align: center;
+ }
+
+ .heading{
+     font-size: 30px;
+     font-weight: bold;
  }
 
 .order_image{

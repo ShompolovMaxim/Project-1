@@ -6,10 +6,10 @@
             <img src="{{ url_for('static', filename=good.photo_link) }}" alt=good.name class='productImage'>
         </div>
         <div class="description">
-            <p>16 GB</p>
-            <p>Цвет: {{good.colour}}</p>
-            <p>Цена: {{good.price.price}} рублей</p>
-            <p>В корзине: {{ quantity }}</p>
+            <div>16 GB</div>
+            <div>Цвет: {{good.colour}}</div>
+            <div>Цена: {{good.price.price}} рублей</div>
+            <div>В корзине: {{ quantity }}</div>
             <form method="POST">
                 <input type="submit" value="Купить" class="btn btn-primary">
             </form>

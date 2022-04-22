@@ -3,8 +3,8 @@
 {% block content %}
     <div>
         
-        <h1>Каталог</h1>
-        <h3>Флешки</h3>
+        <div class="heading">Каталог</div>
+        <div class="heading">Флешки</div>
         
         <div class="filters">
             <form method="POST">
@@ -30,20 +30,18 @@
             {% for good in goods %}
                 <div class="catalog_item">
                     <div class="description">
-                        <div>
-                            <p><a href={{good.link()}}>{{good.name}}</a></p>
-                        </div>
+                        <div class="heading"><a href={{good.link()}}>{{good.name}}</a></div>
                         <div>
                             <a href={{good.link()}}><img class=BuylistImage src="{{ url_for('static', filename=good.photo_link) }}" alt="Флешка №1"></a>
                         </div>
                     </div>
                     <div class="description">
-                        <p>16 GB</p>
-                        <p>Цвет: {{good.colour}}</p>
-                        <p>Цена: {{good.price.price}} рублей</p>
-                        <p>В наличии: {{ good.quantity }} штук</p>
+                        <div>16 GB</div>
+                        <div>Цвет: {{good.colour}}</div>
+                        <div>Цена: {{good.price.price}} рублей</div>
+                        <div>В наличии: {{ good.quantity }} штук</div>
                         {% if good.id in quantity %}
-                            <p>В корзине: {{quantity[good.id]}}</p>
+                            <div>В корзине: {{quantity[good.id]}}</div>
                         {% endif %}
                         <form method="POST">
                             <button type="submit" name="buy" value="{{good.id}}" class="btn btn-primary">Купить</button>
